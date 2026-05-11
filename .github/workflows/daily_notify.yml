@@ -1,0 +1,22 @@
+name: 每日通知
+
+on:
+  schedule:
+    - cron: '0 1 * * *'  # 每天上午9点
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: 安装依赖
+        run: |
+          pip install requests beautifulsoup4
+      
+      - name: 运行爬虫
+        run: python crawler.py
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
